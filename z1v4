@@ -1,0 +1,20 @@
+#!/bin/bash
+
+clear
+cyan='\e[1;36m%s\e[0m\n'
+green='\e[1;32m%s\e[0m\n'
+printf "$cyan"
+./.banner
+printf "$green" "Note Give all subdomains as a input"
+echo ""
+read -p "Enter the full path with file name: " fl
+read -p "Enter comany name: " comp
+mkdir ~/recon/$comp
+cd ~/recon/$comp/
+mkdir ziva
+cd ziva
+while read line;do
+ curl -X OPTIONS -I -k https://$line/hack | tee $line.txt
+ curl -X PUT -I -k https://$line/hack.html | tee put-$line.txt
+
+done < $fl 

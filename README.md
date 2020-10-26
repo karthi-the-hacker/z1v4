@@ -1,5 +1,5 @@
 # z1v4
-Find dangerous methods in single click
+Find dangerous HTTP methods in single click
 
 # Steps:
 1. cd ~/tools

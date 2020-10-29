@@ -8,7 +8,7 @@ printf "$cyan"
 printf "$green" "Note Give all subdomains as a input"
 echo ""
 read -p "Enter the full path with file name: " fl
-read -p "Enter comany name: " comp
+read -p "Enter company name: " comp
 mkdir ~/recon/$comp
 cd ~/recon/$comp/
 mkdir ziva

@@ -5,16 +5,72 @@ cyan='\e[1;36m%s\e[0m\n'
 green='\e[1;32m%s\e[0m\n'
 printf "$cyan"
 ./.banner
+live=$1
 printf "$green" "Note Give all subdomains as a input"
 echo ""
-read -p "Enter the full path with file name: " fl
-read -p "Enter company name: " comp
-mkdir ~/recon/$comp
-cd ~/recon/$comp/
-mkdir ziva
-cd ziva
-while read line;do
- curl -X OPTIONS -I -k https://$line/hack | tee $line.txt
- curl -X PUT -I -k https://$line/hack.html | tee put-$line.txt
+if  [ $live = "live-200" ]&> /dev/null ;
+  then
+   
+   printf "$green" "Finding http-methods only for 200 Status code Subdomains"
+   echo " "
+      read -p "Enter the full path with file name: " fl
+      read -p "Enter comany name: " comp
+      touch ~/recon/$comp/ziva/out/crawl.txt
+      mkdir ~/recon/$comp/ &> /dev/null
+      cd ~/recon/$comp/
+      mkdir ziva &> /dev/null
+      cd ziva
+      mkdir out &> /dev/null
+      cat $fl | httprobe -c 1000  | tee  ~/recon/$comp/ziva/hosts
+      meg -c 1000 /index.html
+      cat ~/recon/$comp/ziva/out/index | grep "200 OK" | cut -d"/" -f2 > ~/recon/$comp/ziva/live-200.txt
+     while read line;
+         do
+            echo "$line"
+            echo $line | gau | tee -a ~/recon/$comp/ziva/out/crawl.txt
+            while read dom ;
+               do
+                  curl -X OPTIONS -I -k $dom | tee $num.txt
+                  curl -X OPTIONS -I -k $dom/hack.txt | tee $num_hack.txt
+                  curl -X PUT -I -k $dom/hack.html -H "Content-Length: 0" | tee hackput_$num.txt
+                  curl -X PUT -I -k $dom -H "Content-Length: 0" | tee put_$num.txt
+                  echo "$dom" >> $num.txt
+                  echo "$dom" >> $num_hack.txt
+                  echo "$dom" >> hackput_$num.txt
+                  echo "$dom" >> put_$num.txt
+                  let "num=num+1"
+               done < ~/recon/$comp/ziva/out/crawl.txt
+            cd ~
 
-done < $fl 
+     done < ~/recon/$comp/ziva/live-200.txt
+else
+     printf "$green" "Finding http-methods for all subdomains"
+     echo " "
+      read -p "Enter the full path with file name: " fl
+      read -p "Enter comany name: " comp
+      mkdir ~/recon/$comp/ &> /dev/null
+      cd ~/recon/$comp/
+      mkdir ziva &> /dev/null
+      cd ziva
+      mkdir out &> /dev/null
+      
+      touch ~/recon/$comp/ziva/out/crawl.txt 
+      while read crawl;
+        do
+          echo $crawl | gau | tee -a ~/recon/$comp/ziva/out/crawl.txt
+          cd ~/recon/$comp/ziva/
+          while read dom ;
+             do
+               curl -X OPTIONS -I -k $dom | tee $num.txt
+               curl -X OPTIONS -I -k $dom/hack.txt | tee $num_hack.txt
+               curl -X PUT -I -k $dom/hack.html -H "Content-Length: 0" | tee hackput_$num.txt
+               curl -X PUT -I -k $dom -H "Content-Length: 0" | tee put_$num.txt
+               echo "$dom" >> $num.txt
+               echo "$dom" >> $num_hack.txt
+               echo "$dom" >> hackput_$num.txt
+               echo "$dom" >> put_$num.txt
+               let "num=num+1"
+            done < ~/recon/$comp/ziva/out/crawl.txt
+        cd ~
+    done < $fl
+fi

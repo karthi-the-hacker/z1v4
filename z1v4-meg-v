@@ -22,4 +22,3 @@ cat ~/recon/$comp/ziva/live-200.txt | gau | tee  ~/recon/$comp/ziva/hosts
 meg -c 100 -X OPTIONS hack.html
 cd out/
 cat */* | grep -nr "Allow:" | tee ~/recon/$comp/ziva/z1v4.txt
-#/home/karthithehacker/recon/google/v1l03t/v1l03t.txt

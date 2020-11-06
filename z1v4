@@ -14,7 +14,7 @@ if  [ $live = "live-200" ]&> /dev/null ;
    printf "$green" "Finding http-methods only for 200 Status code Subdomains"
    echo " "
       read -p "Enter the full path with file name: " fl
-      read -p "Enter comany name: " comp
+      read -p "Enter company name: " comp
       touch ~/recon/$comp/ziva/out/crawl.txt
       mkdir ~/recon/$comp/ &> /dev/null
       cd ~/recon/$comp/
@@ -51,7 +51,7 @@ else
      printf "$green" "Finding http-methods for all subdomains"
      echo " "
       read -p "Enter the full path with file name: " fl
-      read -p "Enter comany name: " comp
+      read -p "Enter company name: " comp
       mkdir ~/recon/$comp/ &> /dev/null
       cd ~/recon/$comp/
       mkdir ziva &> /dev/null

@@ -33,11 +33,15 @@ if  [ $live = "live-200" ]&> /dev/null ;
                   curl -X OPTIONS -I -k $dom | tee $num.txt
                   curl -X OPTIONS -I -k $dom/hack.txt | tee $num_hack.txt
                   curl -X PUT -I -k $dom/hack.html -H "Content-Length: 0" | tee hackput_$num.txt
-                  curl -X PUT -I -k $dom -H "Content-Length: 0" | tee put_$num.txt
+                  curl -X PUT -I -k $dom -H "Content-Length: 0" | tee put_$num.txt X-HTTP-Method-Override: PUT
+                  curl -X POST -I -k $dom/hack.html -H "Content-Length: 0" -H "X-HTTP-Method-Override: PUT" | tee hackpost_$num.txt
+                  curl -X GET -I -k $dom/hack.html -H "Content-Length: 0" -H "X-HTTP-Method-Override: PUT" | tee hackget_$num.txt
                   echo "$dom" >> $num.txt
                   echo "$dom" >> $num_hack.txt
                   echo "$dom" >> hackput_$num.txt
                   echo "$dom" >> put_$num.txt
+                  echo "$dom" >> hackpost_$num.txt
+                  echo "$dom" >> hackget_$num.txt
                   let "num=num+1"
                done < ~/recon/$comp/ziva/out/crawl.txt
             cd ~
@@ -64,11 +68,15 @@ else
                curl -X OPTIONS -I -k $dom | tee $num.txt
                curl -X OPTIONS -I -k $dom/hack.txt | tee $num_hack.txt
                curl -X PUT -I -k $dom/hack.html -H "Content-Length: 0" | tee hackput_$num.txt
-               curl -X PUT -I -k $dom -H "Content-Length: 0" | tee put_$num.txt
+               curl -X PUT -I -k $dom -H "Content-Length: 0" | tee put_$num.txt X-HTTP-Method-Override: PUT
+               curl -X POST -I -k $dom/hack.html -H "Content-Length: 0" -H "X-HTTP-Method-Override: PUT" | tee hackpost_$num.txt
+               curl -X GET -I -k $dom/hack.html -H "Content-Length: 0" -H "X-HTTP-Method-Override: PUT" | tee hackget_$num.txt
                echo "$dom" >> $num.txt
                echo "$dom" >> $num_hack.txt
                echo "$dom" >> hackput_$num.txt
                echo "$dom" >> put_$num.txt
+               echo "$dom" >> hackpost_$num.txt
+               echo "$dom" >> hackget_$num.txt
                let "num=num+1"
             done < ~/recon/$comp/ziva/out/crawl.txt
         cd ~
